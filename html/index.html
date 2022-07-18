@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <script src="./libs/vue.js"></script>
+    <script src="./libs/anime.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css"
+      rel="stylesheet"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="style.css" type="text/css" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui"
+    />
+  </head>
+  <body>
+    <v-app data-app>
+      <div id="app">
+        <div class="activity-box">
+          <div class="top">
+            <div
+              class="icon-box"
+              v-if="info.box"
+              :style="{'background': info.box.background}"
+            >
+              <v-icon>{{info.box.icon}}</v-icon>
+            </div>
+            <h1 class="top-text" v-if="info.box.text">{{info.box.text}}</h1>
+            <h1 class="top-time" v-if="info.time">{{info.time}}</h1>
+          </div>
+          <hr />
+          <div class="text">
+            <h1 class="text-header" v-if="info.header">{{info.header}}</h1>
+            <h1 class="text-description" v-if="info.description">
+              {{info.description}}
+            </h1>
+          </div>
+        </div>
+      </div>
+    </v-app>
+
+    <script>
+      const viewmodel = new Vue({
+        el: "#app",
+        vuetify: new Vuetify(),
+        data: {
+          info: {
+            box: {
+              background: "#2647EF",
+              icon: "mdi-bank",
+              text: "Banking",
+            },
+            time: "Just now",
+            header: "Using the ATM",
+            description: "You are currently using the ATM machine",
+          },
+        },
+        methods: {},
+        computed: {},
+      });
+
+      console.log("loaded");
+
+      window.addEventListener("message", (event) => {
+        switch (event.data.action) {
+          case "updatedata":
+            viewmodel.info = event.data.data;
+            break;
+          case "updatevisibility":
+            if (event.data.value == true) {
+              anime({
+                targets: ".activity-box",
+                right: {
+                  value: "2.5vh",
+                  duration: 300,
+                },
+                easing: "linear",
+              });
+            } else {
+              anime({
+                targets: ".activity-box",
+                right: {
+                  value: "-40vw",
+                  duration: 300,
+                },
+                easing: "linear",
+              });
+            }
+            break;
+        }
+      });
+    </script>
+  </body>
+</html>
