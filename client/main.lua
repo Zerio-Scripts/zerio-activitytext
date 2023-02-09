@@ -1,5 +1,4 @@
 function ShowText(data)
-    print("yes")
     SendNUIMessage({
         action = "updatevisibility",
         value = true
